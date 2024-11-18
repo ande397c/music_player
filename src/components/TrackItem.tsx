@@ -2,33 +2,24 @@ import { Thumbnail } from "./Thumbnail";
 import { MusicWaves } from "./MusicWaves";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Track } from "@/types/track";
 
 interface TrackProps {
- trackTitle: string;
- artist: string;
- trackLength: string | undefined;
- imgSrc: string;
- isSongPlaying: boolean | undefined;
+ track: Track;
  isPlaying: boolean;
  onClick: () => void;
 }
 
-export const Track = ({ trackTitle, artist, trackLength, imgSrc, isSongPlaying, isPlaying, onClick }: TrackProps) => {
+export const TrackItem = ({ track, isPlaying, onClick }: TrackProps) => {
  return (
   <li className="flex justify-between items-center text-white" onClick={onClick}>
-   <div className="flex items-center gap-3">
-    <Thumbnail imgSrc={imgSrc} />
-    <div>
-     <h3 className={`${isSongPlaying && "text-accent"}`}>{trackTitle}</h3>
-     <p className="text-grey">{artist}</p>
-    </div>
-   </div>
-   {isSongPlaying ? (
+   <Thumbnail imgSrc={track.imgSrc} isSongPlaying={track.isSongPlaying} trackArtist={track.trackArtist} trackTitle={track.trackTitle} />
+   {track.isSongPlaying ? (
     <MusicWaves isPlaying={isPlaying} />
    ) : (
     <p className="flex items-center gap-2">
      <FontAwesomeIcon icon={faClock} />
-     {trackLength}
+     {track.trackLength}
     </p>
    )}
   </li>

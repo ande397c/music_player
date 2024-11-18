@@ -2,10 +2,10 @@ import { forwardRef, useState } from "react";
 import { Thumbnail } from "@/components/Thumbnail";
 import { IconButton } from "@/components/IconButton";
 import { faStepBackward, faPlay, faPause, faStepForward } from "@fortawesome/free-solid-svg-icons";
-import { Song } from "@/types/song";
+import { Track } from "@/types/track";
 
 interface TrackControlsProps {
- currentTrack: Song | undefined;
+ currentTrack: Track | undefined;
  isPlaying: boolean;
  handlePrev: (direction: string) => void;
  onClick: () => void;
@@ -49,15 +49,9 @@ export const TrackControls = forwardRef<HTMLAudioElement, TrackControlsProps>(({
  };
 
  return (
-  <div className="text-white bg-darkGrey bottom-0 fixed w-full rounded-t-md p-2">
-   <div className="flex items-center gap-3">
-    <Thumbnail imgSrc={currentTrack?.imgSrc} />
-    <div>
-     <h3>{currentTrack.trackTitle}</h3>
-     <p className="text-grey text-sm">{currentTrack.artist}</p>
-    </div>
-   </div>
-   <div className="flex justify-center flex-col items-center my-2 gap-1">
+  <div className="lg:flex lg:items-center lg:gap-12 xl:gap-24 text-white bg-darkGrey bottom-0 fixed w-full rounded-t-md p-2">
+   <Thumbnail {...currentTrack} />
+   <div className="flex justify-center flex-col lg:flex-1 lg:max-w-[60%] items-center my-2 gap-1">
     <div className="flex items-center gap-2 mb-2">
      <IconButton onClick={() => handlePrev("prev")} variant="noBg" icon={faStepBackward} />
      <IconButton onClick={onClick} variant="withBg" icon={isPlaying ? faPause : faPlay} />

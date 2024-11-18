@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Header = () => {
  return (
-  <header className="h-fit flex justify-between items-center p-2 pt-2 mb-6 text-white">
+  <header className="h-fit flex justify-between flex-1 gap-4 items-center p-2 pt-2 mb-6 text-white">
    <Input placeholder="Search" />
    <div className="flex items-center gap-4">
     <div className="flex gap-6">

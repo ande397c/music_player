@@ -1,14 +1,14 @@
 import { useRef, useState, useEffect } from "react";
 import { Header } from "@/components/Header";
-import { songsData } from "@/data/tracks";
-import { Track } from "@/components/Track";
+import { trackData } from "@/data/tracks";
+import { TrackItem } from "@/components/TrackItem";
 import { TrackControls } from "@/components/TrackControls";
-import { useKeyboardShortcut } from "@/utils/useKeyboardShortcut";
-import { Song } from "@/types/song";
+import { useKeyboardShortcut } from "@/components/hooks/useKeyboardShortcut";
+import { Track } from "@/types/track";
 
 const App = () => {
- const [currentTrack, setCurrentTrack] = useState<Song | undefined>();
- const [songs, setSongs] = useState<Song[]>(songsData);
+ const [currentTrack, setCurrentTrack] = useState<Track | undefined>(undefined);
+ const [tracks, setTracks] = useState<Track[]>(trackData);
  const [isPlaying, setIsPlaying] = useState(false);
  const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -19,18 +19,18 @@ const App = () => {
   },
  });
 
- const handleTrackClick = (clikedTrack: Song) => {
+ const handleTrackClick = (clikedTrack: Track) => {
   setCurrentTrack({
-   id: clikedTrack.id,
+   trackId: clikedTrack.trackId,
    trackTitle: clikedTrack.trackTitle,
    trackSrc: clikedTrack.trackSrc,
-   artist: clikedTrack.artist,
+   trackArtist: clikedTrack.trackArtist,
    imgSrc: clikedTrack.imgSrc,
   });
 
-  setSongs(
-   songs.map((song) => {
-    if (song.id === clikedTrack.id) {
+  setTracks(
+   tracks.map((song) => {
+    if (song.trackId === clikedTrack.trackId) {
      return { ...song, isSongPlaying: true };
     } else {
      return { ...song, isSongPlaying: false };
@@ -63,10 +63,10 @@ const App = () => {
 
  const handleTrackChange = (direction: "prev" | "next") => {
   if (!currentTrack) return;
-  const currentTrackIndex = songs.findIndex((song) => song.id === currentTrack.id);
-  const newIndex = direction === "next" ? (currentTrackIndex + 1) % songs.length : (currentTrackIndex - 1 + songs.length) % songs.length;
+  const currentTrackIndex = tracks.findIndex((song) => song.trackId === currentTrack.trackId);
+  const newIndex = direction === "next" ? (currentTrackIndex + 1) % tracks.length : (currentTrackIndex - 1 + tracks.length) % tracks.length;
 
-  const newTrack = songs[newIndex];
+  const newTrack = tracks[newIndex];
   handleTrackClick(newTrack);
  };
 
@@ -76,8 +76,8 @@ const App = () => {
     <Header />
     <h1 className="text-white text-3xl p-2">Songs</h1>
     <ul className="flex flex-col gap-8 p-2">
-     {songs.map((song) => (
-      <Track key={song.artist} trackTitle={song.trackTitle} trackLength={song.trackLength} artist={song.artist} imgSrc={song.imgSrc} isSongPlaying={song.isSongPlaying} isPlaying={isPlaying} onClick={() => handleTrackClick(song)} />
+     {tracks.map((song) => (
+      <TrackItem key={song.trackId} track={song} isPlaying={isPlaying} onClick={() => handleTrackClick(song)} />
      ))}
     </ul>
    </main>
